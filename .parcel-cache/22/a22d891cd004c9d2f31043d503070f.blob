@@ -441,8 +441,7 @@ const showRecipe = async function () {
       sourceUrl: recipe.source_url,
       image: recipe.image_url,
       servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients
+      cookingTime: recipe.cooking_time
     };
     console.log(recipe); // 2) Rendering recipe:
 
@@ -498,7 +497,7 @@ const showRecipe = async function () {
     <div class="recipe__ingredients">
       <h2 class="heading--2">Recipe ingredients</h2>
       <ul class="recipe__ingredient-list">
-        ${recipe.ingredients.map(ing => {
+        ${recipe.ingregients.map(ing => {
       return `
             <li class="recipe__ingredient">
               <svg class="recipe__icon">
@@ -509,18 +508,16 @@ const showRecipe = async function () {
                 <span class="recipe__unit">${ing.unit}</span>
                 ${ing.description}
               </div>
-            </li>
-            `;
-    }).join('')}
+          </li>
+          `;
+    })}
     </div>
 
   <div class="recipe__directions">
     <h2 class="heading--2">How to cook it</h2>
     <p class="recipe__directions-text">
       This recipe was carefully designed and tested by
-      <span class="recipe__publisher">
-      ${recipe.publisher}
-      </span>. Please check out
+      <span class="recipe__publisher">${recipe.publisher}</span>. Please check out
       directions at their website.
     </p>
     <a

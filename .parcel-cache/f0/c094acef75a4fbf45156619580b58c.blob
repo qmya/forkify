@@ -441,8 +441,7 @@ const showRecipe = async function () {
       sourceUrl: recipe.source_url,
       image: recipe.image_url,
       servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients
+      cookingTime: recipe.cooking_time
     };
     console.log(recipe); // 2) Rendering recipe:
 
@@ -506,8 +505,7 @@ const showRecipe = async function () {
               </svg>
               <div class="recipe__quantity">${ing.quantity}</div>
               <div class="recipe__description">
-                <span class="recipe__unit">${ing.unit}</span>
-                ${ing.description}
+                <span class="recipe__unit">${ing.unit}</span>${ing.description}
               </div>
             </li>
             `;
@@ -518,9 +516,7 @@ const showRecipe = async function () {
     <h2 class="heading--2">How to cook it</h2>
     <p class="recipe__directions-text">
       This recipe was carefully designed and tested by
-      <span class="recipe__publisher">
-      ${recipe.publisher}
-      </span>. Please check out
+      <span class="recipe__publisher">${recipe.publisher}</span>. Please check out
       directions at their website.
     </p>
     <a

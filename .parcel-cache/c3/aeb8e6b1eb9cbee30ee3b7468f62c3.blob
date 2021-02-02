@@ -511,7 +511,8 @@ const showRecipe = async function () {
               </div>
             </li>
             `;
-    }).join('')}
+    })}
+          // .join('')}
     </div>
 
   <div class="recipe__directions">
