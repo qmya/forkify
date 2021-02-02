@@ -500,9 +500,7 @@ const showRecipe = async function () {
   try {
     //making a dynamic id for the url
     const id = window.location.hash.slice(1);
-    console.log(id);
-    if (!id) return; //guard clause
-    // 1) Loading the recipe :
+    console.log(id); // 1) Loading the recipe :
 
     renderSpinner(recipeContainer);
     const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${id}`); //always we convert the response into json
@@ -626,7 +624,7 @@ const showRecipe = async function () {
 //adding eventlistner for the search
 // window.addEventListener('hashChange', showRecipe);
 // window.addEventListener('load', showRecipe);
-//we can do the ☝🏽one through DRY method:
+//we can do the
 
 
 ['hashChange', 'load'].forEach(event => addEventListener(event, showRecipe));

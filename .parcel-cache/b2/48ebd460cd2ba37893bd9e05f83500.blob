@@ -501,8 +501,7 @@ const showRecipe = async function () {
     //making a dynamic id for the url
     const id = window.location.hash.slice(1);
     console.log(id);
-    if (!id) return; //guard clause
-    // 1) Loading the recipe :
+    if (!id) return; // 1) Loading the recipe :
 
     renderSpinner(recipeContainer);
     const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${id}`); //always we convert the response into json
