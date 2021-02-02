@@ -469,7 +469,7 @@ const renderSpinner = function (parentEl) {
 const showRecipe = async function () {
   try {
     // 1) Loading the recipe :
-    renderSpinner(recipeContainer);
+    re;
     const res = await fetch('https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886'); //always we convert the response into json
 
     const data = await res.json(); //if the id is not right than throw a new error
