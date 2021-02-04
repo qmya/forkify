@@ -45,4 +45,4 @@ const controlRecipe = async function () {
 // window.addEventListener('load', showRecipe);
 
 //we can do the ☝🏽one through DRY method:
-['hashChange', 'load'].forEach(event => addEventListener(event, showRecipe));
+['hashChange', 'load'].forEach(event => addEventListener(event, controlRecipe));
