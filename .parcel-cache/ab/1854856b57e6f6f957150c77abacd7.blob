@@ -5074,7 +5074,12 @@ exports.state = state;
 
 const loadRecipe = async function (id) {
   try {
-    const data = await (0, _helpers.getJSON)(`${_config.API_URL}/${id}`); //let create a new recipe object to remove the underscore from the name
+    const res = await fetch(`${_config.API_URL}/${id}`); //always we convert the response into json
+
+    const data = await res.json(); //if the id is not right than throw a new error
+
+    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+    console.log(res, data); //let create a new recipe object to remove the underscore from the name
     //let recipe = data.data.recipe; //destructure it
 
     const {
@@ -5092,7 +5097,7 @@ const loadRecipe = async function (id) {
     };
     console.log(state.recipe);
   } catch (error) {
-    console.error(`${error} 🧨`);
+    console.log(error);
   }
 };
 
@@ -5874,10 +5879,9 @@ const getJSON = async function (url) {
     const data = await res.json(); //if the id is not right than throw a new error
 
     if (!res.ok) throw new Error(`${data.message} (${res.status})`);
-    return data;
     console.log(res, data);
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 

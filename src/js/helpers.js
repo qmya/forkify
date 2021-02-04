@@ -5,8 +5,9 @@ export const getJSON = async function (url) {
     const data = await res.json();
     //if the id is not right than throw a new error
     if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+    return data;
     console.log(res, data);
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };

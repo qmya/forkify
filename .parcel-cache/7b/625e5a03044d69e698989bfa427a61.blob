@@ -5092,7 +5092,7 @@ const loadRecipe = async function (id) {
     };
     console.log(state.recipe);
   } catch (error) {
-    console.error(`${error} 🧨`);
+    console.log(error);
   }
 };
 
@@ -5877,7 +5877,7 @@ const getJSON = async function (url) {
     return data;
     console.log(res, data);
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 

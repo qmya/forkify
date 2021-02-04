@@ -5092,7 +5092,7 @@ const loadRecipe = async function (id) {
     };
     console.log(state.recipe);
   } catch (error) {
-    console.error(`${error} 🧨`);
+    console.log(error);
   }
 };
 
@@ -5874,10 +5874,9 @@ const getJSON = async function (url) {
     const data = await res.json(); //if the id is not right than throw a new error
 
     if (!res.ok) throw new Error(`${data.message} (${res.status})`);
-    return data;
     console.log(res, data);
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 

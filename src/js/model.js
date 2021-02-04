@@ -1,5 +1,7 @@
 import { async } from 'regenerator-runtime';
 import { API_URL } from './config.js';
+import { getJSON } from './helpers.js';
+
 //Here we write all our models
 export const state = {
   recipe: {},
@@ -7,12 +9,7 @@ export const state = {
 
 export const loadRecipe = async function (id) {
   try {
-    const res = await fetch(`${API_URL}/${id}`);
-    //always we convert the response into json
-    const data = await res.json();
-    //if the id is not right than throw a new error
-    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
-    console.log(res, data);
+    const data = await getJSON(`${API_URL}/${id}`);
 
     //let create a new recipe object to remove the underscore from the name
     //let recipe = data.data.recipe; //destructure it
@@ -29,6 +26,6 @@ export const loadRecipe = async function (id) {
     };
     console.log(state.recipe);
   } catch (error) {
-    console.log(error);
+    console.error(`${error} 🧨`);
   }
 };
