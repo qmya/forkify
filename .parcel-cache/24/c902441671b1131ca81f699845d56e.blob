@@ -1,0 +1,42 @@
+var _modelJs = require('./model.js');
+var _viewsRecipeViewJs = require('./views/recipeView.js');
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+var _viewsRecipeViewJsDefault = _parcelHelpers.interopDefault(_viewsRecipeViewJs);
+require('core-js/stable');
+require('regenerator-runtime/runtime');
+// polyfilling async await
+const recipeContainer = document.querySelector('.recipe');
+const timeout = function (s) {
+  return new Promise(function (_, reject) {
+    setTimeout(function () {
+      reject(new Error(`Request took too long! Timeout after ${s} second`));
+    }, s * 1000);
+  });
+};
+// https://forkify-api.herokuapp.com/v2
+// /////////////////////////////////////
+const controlRecipe = async function () {
+  try {
+    // making a dynamic id for the url
+    const id = window.location.hash.slice(1);
+    console.log(id);
+    if (!id) return;
+    // guard clause
+    _viewsRecipeViewJsDefault.default.renderSpinner();
+    // 1) Loading the recipe :
+    await _modelJs.loadRecipe(id);
+    // async function 👉🏽Here is the model.loadRecipe return anything
+    // const recipe = model.state.recipe //We can write this like this too 👇🏽
+    // const { recipe } = model.state;
+    // 2) Rendering recipe:
+    _viewsRecipeViewJsDefault.default.render(_modelJs.state.recipe);
+  } catch (error) {
+    console.error(error);
+  }
+};
+// showRecipe();
+// adding eventlistner for the search
+// window.addEventListener('hashChange', showRecipe);
+// window.addEventListener('load', showRecipe);
+// we can do the ☝🏽one through DRY method:
+['hashChange', 'load'].forEach(event => addEventListener(event, controlRecipe));
