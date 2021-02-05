@@ -4,3 +4,4 @@
 
 //using uppercase is used for a constants that will never change.its a commomn practice specially in a configuration file like this 👇🏽😀
 export const API_URL = 'https://forkify-api.herokuapp.com/api/v2/recipes';
+export const TIMEOUT_SEC = 10;
