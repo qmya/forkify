@@ -5986,7 +5986,7 @@ class RecipeView {
   } //Success message too
 
 
-  renderMessage(message = this._message) {
+  renderMessage(message = this._errorMessage) {
     const markup = `
       <div class="message">
         <div>

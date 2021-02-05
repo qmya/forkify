@@ -28,6 +28,7 @@ const controlRecipe = async function () {
     recipeView.render(model.state.recipe); // this render will accept this data (model.state.recipe) & will store it in the object(recipeView)
   } catch (error) {
     console.error(error);
+    recipeView.renderError();
   }
 };
 //showRecipe();

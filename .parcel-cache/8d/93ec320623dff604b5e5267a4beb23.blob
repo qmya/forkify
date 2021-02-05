@@ -5923,8 +5923,6 @@ class RecipeView {
 
     _defineProperty(this, "_errorMessage", 'We could not find that recipe . Please try another one !');
 
-    _defineProperty(this, "_message", '');
-
     _defineProperty(this, "_generateMarkupIngredient", ing => {
       return `
     <li class="recipe__ingredient">
@@ -5986,7 +5984,7 @@ class RecipeView {
   } //Success message too
 
 
-  renderMessage(message = this._message) {
+  renderMessage(message = this._errorMessage) {
     const markup = `
       <div class="message">
         <div>
