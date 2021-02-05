@@ -60,3 +60,5 @@ export const loadSearchResult = async function (query) {
   }
 };
 //loadSearchResult('pizza');
+//<a href="#5ed6604591c37cdc054bc90b"> Recipe 1</a>
+//<a href="#5ed6604591c37cdc054bc886"> Recipe 2</a>

@@ -1,68 +1,15 @@
+import View from './View.js';
+
 import icons from 'url:../../img/icons.svg'; //parcel 2 if its an image you have to use url: with it
 import { Fraction } from 'fractional';
 
-class RecipeView {
+class RecipeView extends View {
   //We want each view have a couple of private methods
-  //So classes makes this so easy to implement the private methods
+  //So classes makes this so easy to implement the private meth ods
 
   _parentElement = document.querySelector('.recipe');
-  _data;
   _errorMessage = 'We could not find that recipe . Please try another one !';
   _message = '';
-
-  render(data) {
-    this._data = data;
-    //render is responsible for rendering HTML:
-    const markup = this._generateMarkup();
-    this._clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
-
-  _clear() {
-    this._parentElement.innerHTML = '';
-  }
-
-  renderSpinner() {
-    const markup = `
-    <div class="spinner">
-      <svg>
-        <use href="${icons}#icon-loader"></use>
-      </svg>
-    </div>
-    `;
-    this._clear;
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
-
-  renderError(message = this._errorMessage) {
-    const markup = `
-      <div class="error">
-        <div>
-          <svg>
-            <use href="${icons}#icon-alert-triangle"></use>
-          </svg>
-        </div>
-          <p>${message}</p>
-      </div>
-    `;
-    this._clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
-  //Success message too
-  renderMessage(message = this._message) {
-    const markup = `
-      <div class="message">
-        <div>
-          <svg>
-            <use href="${icons}#icon-smile"></use>
-          </svg>
-        </div>
-          <p>${message}</p>
-      </div>
-    `;
-    this._clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
 
   addHandlerRender(handler) {
     ['hashChange', 'load'].forEach(event => addEventListener(event, handler));
@@ -113,11 +60,7 @@ class RecipeView {
         </div>
       </div>
 
-      <div class="recipe__user-generated">
-        <svg>
-          <use href="${icons}#icon-user"></use>
-        </svg>
-      </div>
+      
       <button class="btn--round">
         <svg class="">
           <use href="${icons}#icon-bookmark-fill"></use>
