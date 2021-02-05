@@ -37,4 +37,9 @@ const controlRecipe = async function () {
 // window.addEventListener('load', showRecipe);
 
 //we can do the ☝🏽one through DRY method:
-['hashChange', 'load'].forEach(event => addEventListener(event, controlRecipe));
+// ['hashChange', 'load'].forEach(event => addEventListener(event, controlRecipe));
+const init = function () {
+  //we will export the function from recipeView and add it here
+  recipeView.addHandlerRender(controlRecipe);
+};
+init();
