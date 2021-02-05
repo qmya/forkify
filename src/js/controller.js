@@ -1,6 +1,6 @@
 import * as model from './model.js'; //* = everything because we have two exports in this file.
 import recipeView from './views/recipeView.js';
-
+import searchView from './views/searchView.js';
 import 'core-js/stable'; //polyfilling everything else
 import 'regenerator-runtime/runtime'; //polyfilling async await
 
@@ -14,7 +14,6 @@ const controlRecipe = async function () {
   try {
     //making a dynamic id for the url
     const id = window.location.hash.slice(1);
-    console.log(id);
 
     if (!id) return; //guard clause
     recipeView.renderSpinner();
@@ -31,8 +30,26 @@ const controlRecipe = async function () {
     recipeView.renderError();
   }
 };
-//showRecipe();
 
+//////////////////////////////////////////////////////
+//Search
+const controlSearchResults = async function () {
+  try {
+    //1) Get search Query:
+    const query = searchView.getQuery();
+    if (!query) return;
+
+    //2) Load search results:
+    await model.loadSearchResult(query);
+
+    //3) Render the results:
+    console.log(model.state.search.results);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//////////////////////////////////////////////////////
 //adding eventlistner for the search
 // window.addEventListener('hashChange', showRecipe);
 // window.addEventListener('load', showRecipe);
@@ -42,5 +59,7 @@ const controlRecipe = async function () {
 const init = function () {
   //we will export the function from recipeView and add it here
   recipeView.addHandlerRender(controlRecipe);
+  //Search
+  searchView.addHandlerSearch(controlSearchResults);
 };
 init();
