@@ -1,5 +1,5 @@
 import { async } from 'regenerator-runtime';
-import { API_URL } from './config.js';
+import { API_URL, RESULT_PER_PAGE } from './config.js';
 import { getJSON } from './helpers.js';
 
 //Here we write all our models
@@ -8,6 +8,8 @@ export const state = {
   search: {
     query: '',
     results: [],
+    page: 1, //by default
+    resultsPerPage: RESULT_PER_PAGE,
   },
 };
 
@@ -27,6 +29,7 @@ export const loadRecipe = async function (id) {
       servings: recipe.servings,
       cookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients,
+      ...(recipe.key && { key: recipe.key }),
     };
     console.log(state.recipe);
   } catch (error) {
@@ -51,6 +54,7 @@ export const loadSearchResult = async function (query) {
         title: recipe.title,
         publisher: recipe.publisher,
         image: recipe.image_url,
+        ...(recipe.key && { key: recipe.key }),
       };
     });
     console.log(state.search.results);
@@ -59,6 +63,14 @@ export const loadSearchResult = async function (query) {
     throw error;
   }
 };
-//loadSearchResult('pizza');
-//<a href="#5ed6604591c37cdc054bc90b"> Recipe 1</a>
-//<a href="#5ed6604591c37cdc054bc886"> Recipe 2</a>
+
+/////////////////////////////////////////////////////////
+//paginations
+export const getSearchResultsPage = function (page = state.search.page) {
+  //lets save the page so we know that which page we are now and when we go back that previous page is saved inthe state
+  state.search.page = page;
+
+  const start = (page - 1) * state.search.resultsPerPage; //0; let page = 1 1-1*10=0
+  const end = page * state.search.resultsPerPage; //9;
+  return state.search.results.slice(start, end);
+};

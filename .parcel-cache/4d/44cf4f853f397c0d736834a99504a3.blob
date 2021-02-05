@@ -1,0 +1,93 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getSearchResultsPage = exports.loadSearchResult = exports.loadRecipe = exports.state = void 0;
+
+var _regeneratorRuntime = require("regenerator-runtime");
+
+var _config = require("./config.js");
+
+var _helpers = require("./helpers.js");
+
+//Here we write all our models
+const state = {
+  recipe: {},
+  search: {
+    query: '',
+    results: []
+  }
+};
+exports.state = state;
+
+const loadRecipe = async function (id) {
+  try {
+    const data = await (0, _helpers.getJSON)(`${_config.API_URL}${id}`); //let create a new recipe object to remove the underscore from the name
+    //let recipe = data.data.recipe; //destructure it
+
+    const {
+      recipe
+    } = data.data;
+    state.recipe = {
+      id: recipe.id,
+      title: recipe.title,
+      publisher: recipe.publisher,
+      sourceUrl: recipe.source_url,
+      image: recipe.image_url,
+      servings: recipe.servings,
+      cookingTime: recipe.cooking_time,
+      ingredients: recipe.ingredients,
+      ...(recipe.key && {
+        key: recipe.key
+      })
+    };
+    console.log(state.recipe);
+  } catch (error) {
+    console.error(`${error} 🧨`);
+    throw error;
+  }
+}; //////////////////////////////////////////////////////////////////////////////
+//for seaching the data
+//so here the controller will tell what to search for
+//so query is the string the we wanted to search
+
+
+exports.loadRecipe = loadRecipe;
+
+const loadSearchResult = async function (query) {
+  try {
+    state.search.query = query;
+    const data = await (0, _helpers.getJSON)(`${_config.API_URL}?search=${query}`);
+    console.log(data);
+    state.search.results = data.data.recipes.map(recipe => {
+      return {
+        id: recipe.id,
+        title: recipe.title,
+        publisher: recipe.publisher,
+        image: recipe.image_url,
+        ...(recipe.key && {
+          key: recipe.key
+        })
+      };
+    });
+    console.log(state.search.results);
+  } catch (error) {
+    console.error(`${error} 🧨`);
+    throw error;
+  }
+}; /////////////////////////////////////////////////////////
+//paginations
+
+
+exports.loadSearchResult = loadSearchResult;
+
+const getSearchResultsPage = function (page) {
+  const start = (page - 1) * 10; //0; let page = 1 1-1*10=0
+
+  const end = page * 10; //9;
+
+  return state.search.results.slice(start, end);
+};
+
+exports.getSearchResultsPage = getSearchResultsPage;
