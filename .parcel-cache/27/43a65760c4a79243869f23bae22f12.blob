@@ -501,7 +501,7 @@ const controlRecipe = async function () {
     _recipeView.default.renderSpinner(); // 0) Update results view to mark selected search result
 
 
-    _resultsView.default.update(model.getSearchResultsPage()); // 1) Loading the recipe :
+    _resultsView.default.render(model.getSearchResultsPage()); // 1) Loading the recipe :
 
 
     await model.loadRecipe(id); //async function 👉🏽Here is the model.loadRecipe return anything
@@ -6686,6 +6686,7 @@ class View {
   }
 
   update(data) {
+    if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
     this._data = data; //render is responsible for rendering HTML:
 
     const newMarkup = this._generateMarkup();

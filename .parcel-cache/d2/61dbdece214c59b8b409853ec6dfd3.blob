@@ -6674,7 +6674,6 @@ class View {
   }
 
   render(data) {
-    if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
     this._data = data; //render is responsible for rendering HTML:
 
     const markup = this._generateMarkup(); //if (!render) return markup;
@@ -6686,6 +6685,7 @@ class View {
   }
 
   update(data) {
+    if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
     this._data = data; //render is responsible for rendering HTML:
 
     const newMarkup = this._generateMarkup();
