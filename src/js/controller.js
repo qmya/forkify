@@ -28,6 +28,8 @@ const controlRecipe = async function () {
 
     // 2) Rendering recipe:
     recipeView.render(model.state.recipe); // this render will accept this data (model.state.recipe) & will store it in the object(recipeView)
+    //Test
+    //controlServing();
   } catch (error) {
     console.error(error);
     recipeView.renderError();
@@ -55,6 +57,7 @@ const controlSearchResults = async function () {
     console.log(error);
   }
 };
+
 //////////////////////////////////////////////////////
 //controller for page button
 const controlPagination = function (goToPage) {
@@ -65,6 +68,18 @@ const controlPagination = function (goToPage) {
   //2)Render initial pagination buttons
   paginationView.render(model.state.search);
 };
+
+//increase and decrease number of serving by clicking the button
+const controlServings = function (newServings) {
+  console.log('serving ');
+  //update the recipe servings(in state)
+  model.updateServings(newServings);
+
+  //update the recipe view as well
+  // recipeView.render(model.state.recipe);
+  recipeView.update(model.state.recipe);
+};
+
 //////////////////////////////////////////////////////
 //adding eventlistner for the search
 // window.addEventListener('hashChange', showRecipe);
@@ -75,9 +90,13 @@ const controlPagination = function (goToPage) {
 const init = function () {
   //we will export the function from recipeView and add it here
   recipeView.addHandlerRender(controlRecipe);
+  //serving button
+  recipeView.addHandlerUpdateServings(controlServings);
   //Search
   searchView.addHandlerSearch(controlSearchResults);
   //page button
   paginationView.addHandlerClick(controlPagination);
+
+  // controlServing();
 };
 init();
