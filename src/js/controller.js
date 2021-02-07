@@ -2,6 +2,7 @@ import * as model from './model.js'; //* = everything because we have two export
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
+import paginationView from './views/paginationView.js';
 
 import 'core-js/stable'; //polyfilling everything else
 import 'regenerator-runtime/runtime'; //polyfilling async await
@@ -46,15 +47,24 @@ const controlSearchResults = async function () {
     await model.loadSearchResult(query);
 
     //3) Render the results:
+    resultsView.render(model.getSearchResultsPage(1));
 
-    //We will also show the render result
-    console.log(model.getSearchResultsPage());
-    resultsView.render(model.getSearchResultsPage());
+    //4)Render initial pagination buttons
+    paginationView.render(model.state.search);
   } catch (error) {
     console.log(error);
   }
 };
+//////////////////////////////////////////////////////
+//controller for page button
+const controlPagination = function (goToPage) {
+  console.log(goToPage);
+  //1) Render the NEW results:
+  resultsView.render(model.getSearchResultsPage(goToPage));
 
+  //2)Render initial pagination buttons
+  paginationView.render(model.state.search);
+};
 //////////////////////////////////////////////////////
 //adding eventlistner for the search
 // window.addEventListener('hashChange', showRecipe);
@@ -67,5 +77,7 @@ const init = function () {
   recipeView.addHandlerRender(controlRecipe);
   //Search
   searchView.addHandlerSearch(controlSearchResults);
+  //page button
+  paginationView.addHandlerClick(controlPagination);
 };
 init();
