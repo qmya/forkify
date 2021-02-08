@@ -30,7 +30,7 @@ export default class View {
 
     newElements.forEach((newEl, i) => {
       const curEl = curElements[i];
-      console.log(curEl, newEl.isEqualNode(curEl)); //Checking if they both are equal
+      //console.log(curEl, newEl.isEqualNode(curEl)); //Checking if they both are equal
 
       //Update changes TEXT
       if (

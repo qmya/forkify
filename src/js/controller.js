@@ -83,6 +83,16 @@ const controlServings = function (newServings) {
 };
 
 //////////////////////////////////////////////////////
+//Bookmark controller:
+const controlAddBookmark = function () {
+  if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
+  else model.deleteBookmark(model.state.recipe.id);
+
+  console.log(model.state.recipe);
+  recipeView.update(model.state.recipe);
+};
+
+//////////////////////////////////////////////////////
 //adding eventlistner for the search
 // window.addEventListener('hashChange', showRecipe);
 // window.addEventListener('load', showRecipe);
@@ -94,6 +104,8 @@ const init = function () {
   recipeView.addHandlerRender(controlRecipe);
   //serving button
   recipeView.addHandlerUpdateServings(controlServings);
+  //Bookmark button
+  recipeView.addHandlerAddBookmark(controlAddBookmark);
   //Search
   searchView.addHandlerSearch(controlSearchResults);
   //page button
