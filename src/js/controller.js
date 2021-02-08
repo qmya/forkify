@@ -4,6 +4,7 @@ import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
 import bookmarksView from './views/bookmarksView.js';
+import addRecipeView from './views/addRecipeView.js';
 
 import 'core-js/stable'; //polyfilling everything else
 import 'regenerator-runtime/runtime'; //polyfilling async await
@@ -104,6 +105,13 @@ const controlBookmarks = function () {
 };
 
 //////////////////////////////////////////////////////
+//Adding recipe to the Api
+const controlAddRecipe = function (newRecipe) {
+  console.log(newRecipe);
+
+  //upload the new recipe data
+};
+//////////////////////////////////////////////////////
 //adding eventlistner for the search
 // window.addEventListener('hashChange', showRecipe);
 // window.addEventListener('load', showRecipe);
@@ -122,7 +130,8 @@ const init = function () {
   searchView.addHandlerSearch(controlSearchResults);
   //page button
   paginationView.addHandlerClick(controlPagination);
-
+  //Add new Recipe
+  addRecipeView.addHandlerUpload(controlAddRecipe);
   // controlServing();
 };
 init();

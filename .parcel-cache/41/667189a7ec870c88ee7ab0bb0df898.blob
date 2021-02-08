@@ -586,7 +586,7 @@ const controlBookmarks = function () {
 
 
 const controlAddRecipe = function (newRecipe) {
-  console.log(newRecipe); //upload the new recipe data
+  console.log(newRecipe); //upload
 }; //////////////////////////////////////////////////////
 //adding eventlistner for the search
 // window.addEventListener('hashChange', showRecipe);
@@ -7175,14 +7175,12 @@ class AddRecipeView extends _View.default {
     this._overlay.addEventListener('click', this.toggleWindow.bind(this));
   }
 
-  addHandlerUpload(handler) {
+  addHandlerUpload() {
     this._parentElement.addEventListener('submit', function (e) {
       e.preventDefault(); //FormData is to get the form data
 
-      const dataArr = [...new FormData(this)]; //converting this array to an object
-
-      const data = Object.fromEntries(dataArr);
-      handler(data);
+      const data = [...new FormData(this)];
+      console.log(data);
     });
   }
 

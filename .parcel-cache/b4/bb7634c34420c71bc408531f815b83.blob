@@ -582,12 +582,6 @@ const controlAddBookmark = function () {
 const controlBookmarks = function () {
   _bookmarksView.default.render(model.state.bookmarks);
 }; //////////////////////////////////////////////////////
-//Adding recipe to the Api
-
-
-const controlAddRecipe = function (newRecipe) {
-  console.log(newRecipe); //upload the new recipe data
-}; //////////////////////////////////////////////////////
 //adding eventlistner for the search
 // window.addEventListener('hashChange', showRecipe);
 // window.addEventListener('load', showRecipe);
@@ -611,10 +605,7 @@ const init = function () {
   _searchView.default.addHandlerSearch(controlSearchResults); //page button
 
 
-  _paginationView.default.addHandlerClick(controlPagination); //Add new Recipe
-
-
-  _addRecipeView.default.addHandlerUpload(controlAddRecipe); // controlServing();
+  _paginationView.default.addHandlerClick(controlPagination); // controlServing();
 
 };
 
@@ -7173,17 +7164,6 @@ class AddRecipeView extends _View.default {
     this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
 
     this._overlay.addEventListener('click', this.toggleWindow.bind(this));
-  }
-
-  addHandlerUpload(handler) {
-    this._parentElement.addEventListener('submit', function (e) {
-      e.preventDefault(); //FormData is to get the form data
-
-      const dataArr = [...new FormData(this)]; //converting this array to an object
-
-      const data = Object.fromEntries(dataArr);
-      handler(data);
-    });
   }
 
   _generateMarkup() {}
