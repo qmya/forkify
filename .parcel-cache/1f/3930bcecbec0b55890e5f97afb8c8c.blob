@@ -503,9 +503,7 @@ const controlRecipe = async function () {
     _recipeView.default.renderSpinner(); // 0) Update results view to mark selected search result
 
 
-    _resultsView.default.update(model.getSearchResultsPage());
-
-    _bookmarksView.default.update(model.state.bookmarks); // 1) Loading the recipe :
+    _resultsView.default.update(model.getSearchResultsPage()); // 1) Loading the recipe :
 
 
     await model.loadRecipe(id); //async function 👉🏽Here is the model.loadRecipe return anything
@@ -573,10 +571,8 @@ const controlAddBookmark = function () {
   //1) Add or remove bookmark
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);else model.deleteBookmark(model.state.recipe.id); //2) Update the recipe view bookmark icon
 
-  _recipeView.default.update(model.state.recipe); //3) Render the list of bookmarks
+  _recipeView.default.update(model.state.recipe); //3)
 
-
-  _bookmarksView.default.render(model.state.bookmarks);
 }; //////////////////////////////////////////////////////
 //adding eventlistner for the search
 // window.addEventListener('hashChange', showRecipe);
@@ -6725,13 +6721,12 @@ class View {
     _defineProperty(this, "_data", void 0);
   }
 
-  render(data, render = true) {
+  render(data) {
     if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
     this._data = data; //render is responsible for rendering HTML:
 
-    const markup = this._generateMarkup();
+    const markup = this._generateMarkup(); //if (!render) return markup;
 
-    if (!render) return markup;
 
     this._clear();
 
@@ -6870,8 +6865,6 @@ exports.default = void 0;
 
 var _View = _interopRequireDefault(require("./View.js"));
 
-var _previewView = _interopRequireDefault(require("./previewView.js"));
-
 var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -6894,49 +6887,20 @@ class ResultsView extends _View.default {
     console.log(this._data); //let loop through the this._data and return the elements value that we needed inside the HTML:
     //will return the string
 
-    return this._data.map(result => _previewView.default.render(result, false)).join('');
+    return this._data.map(this._generateMarkupPreview).join('');
   }
 
-}
-
-var _default = new ResultsView();
-
-exports.default = _default;
-},{"./View.js":"61b7a1b097e16436be3d54c2f1828c73","url:../../img/icons.svg":"bf1dbfc46afe6a7efbd7538f9c58f602","./previewView.js":"e4d6583325a8b6c9380670c4f233bf07"}],"e4d6583325a8b6c9380670c4f233bf07":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _View = _interopRequireDefault(require("./View.js"));
-
-var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//parcel 2 if its an image you have to use url: with it
-class PreviewView extends _View.default {
-  constructor(...args) {
-    super(...args);
-
-    _defineProperty(this, "_parentElement", '');
-  }
-
-  _generateMarkup() {
+  _generateMarkupPreview(result) {
     const id = window.location.hash.slice(1);
     return `
         <li class="preview">
-            <a class="preview__link " ${this._data.id === id ? 'preview__link--active' : ''} href="#${this._data.id}">
+            <a class="preview__link " ${result.id === id ? 'preview__link--active' : ''} href="#${result.id}">
                 <figure class="preview__fig">
-                    <img src="${this._data.image}" alt="${this._data.title}" />
+                    <img src="${result.image}" alt="${result.title}" />
                 </figure>
                 <div class="preview__data">
-                    <h4 class="preview__title">${this._data.title}</h4>
-                    <p class="preview__publisher">${this._data.publisher}</p>
+                    <h4 class="preview__title">${result.title}</h4>
+                    <p class="preview__publisher">${result.publisher}</p>
                     
                 </div>
             </a>
@@ -6946,7 +6910,12 @@ class PreviewView extends _View.default {
 
 }
 
-var _default = new PreviewView();
+var _default = new ResultsView(); //<div class="preview__user-generated">
+//  <svg>
+//   <use href="${icons}#icon-user"></use>
+//</svg>
+//</div>
+
 
 exports.default = _default;
 },{"./View.js":"61b7a1b097e16436be3d54c2f1828c73","url:../../img/icons.svg":"bf1dbfc46afe6a7efbd7538f9c58f602"}],"d2063f3e7de2e4cdacfcb5eb6479db05":[function(require,module,exports) {
@@ -7050,38 +7019,143 @@ exports.default = void 0;
 
 var _View = _interopRequireDefault(require("./View.js"));
 
-var _previewView = _interopRequireDefault(require("./previewView.js"));
-
 var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
+
+var _fractional = require("fractional");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//parcel 2 if its an image you have to use url: with it
-class BookmarksView extends _View.default {
+class bookmarksView extends _View.default {
   constructor(...args) {
     super(...args);
 
     _defineProperty(this, "_parentElement", document.querySelector('.bookmarks__list'));
 
-    _defineProperty(this, "_errorMessage", 'No bookmark yet. Find a nice recipe and bookmark it');
+    _defineProperty(this, "_errorMessage", 'No bookmark yet! Find a nice recipe and bookmark it 😊');
 
     _defineProperty(this, "_message", '');
+
+    _defineProperty(this, "_generateMarkupIngredient", ing => {
+      return `
+    <li class="recipe__ingredient">
+      <svg class="recipe__icon">
+        <use href="${_icons.default}#icon-check"></use>
+      </svg>
+      <div class="recipe__quantity">${ing.quantity ? new _fractional.Fraction(ing.quantity).toString() : ''}</div>
+      <div class="recipe__description">
+        <span class="recipe__unit">${ing.unit}</span>
+        ${ing.description}
+      </div>
+    </li>
+    `;
+    });
+  }
+
+  addHandlerRender(handler) {
+    ['hashchange', 'load'].forEach(event => addEventListener(event, handler));
+  }
+
+  addHandlerUpdateServings(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn--update-servings');
+      if (!btn) return;
+      const updateTo = +btn.dataset.updateTo;
+      if (updateTo > 0) handler(updateTo); //updateTo is greater than 0 than call handler otherwise not
+    });
+  }
+
+  addHandlerAddBookmark(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn--bookmark');
+      if (!btn) return;
+      handler();
+    });
   }
 
   _generateMarkup() {
-    console.log(this._data); //let loop through the this._data and return the elements value that we needed inside the HTML:
-    //will return the string
+    return `
+      <figure class="recipe__fig">
+        <img src="${this._data.image}" alt="${this._data.title}" class="recipe__img" />
+        <h1 class="recipe__title">
+          <span>${this._data.title}</span>
+        </h1>
+      </figure>
 
-    return this._data.map(bookmark => _previewView.default.render(bookmark, false)).join('');
+      <div class="recipe__details">
+        <div class="recipe__info">
+          <svg class="recipe__info-icon">
+            <use href="${_icons.default}#icon-clock"></use>
+          </svg>
+          <span class="recipe__info-data recipe__info-data--minutes">${this._data.cookingTime}</span>
+          <span class="recipe__info-text">minutes</span>
+        </div>
+
+      <div class="recipe__info">
+        <svg class="recipe__info-icon">
+          <use href="${_icons.default}#icon-users"></use>
+        </svg>
+        <span class="recipe__info-data recipe__info-data--people">${this._data.servings}</span>
+        <span class="recipe__info-text">servings</span>
+
+        <div class="recipe__info-buttons">
+          <button class="btn--tiny btn--update-servings" data-update-to="${this._data.servings - 1}">
+            <svg>
+              <use href="${_icons.default}#icon-minus-circle"></use>
+            </svg>
+          </button>
+          <button class="btn--tiny btn--update-servings" data-update-to="${this._data.servings + 1}">
+            <svg>
+              <use href="${_icons.default}#icon-plus-circle"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="recipe__user-generated">
+      </div>
+      <button class="btn--round btn--bookmark">
+        <svg class="">
+          <use href="${_icons.default}#icon-bookmark${this._data.bookmarked ? '-fill' : ''}"></use>
+        </svg>
+      </button>
+    </div>
+
+      <div class="recipe__ingredients">
+        <h2 class="heading--2">Recipe ingredients</h2>
+        <ul class="recipe__ingredient-list">
+          ${this._data.ingredients.map(this._generateMarkupIngredient).join('')}
+      </div>
+
+    <div class="recipe__directions">
+      <h2 class="heading--2">How to cook it</h2>
+      <p class="recipe__directions-text">
+        This recipe was carefully designed and tested by
+        <span class="recipe__publisher">
+        ${this._data.publisher}
+        </span>. Please check out
+        directions at their website.
+      </p>
+      <a
+        class="btn--small recipe__btn"
+        href="${this._data.sourceUrl}"
+        target="_blank"
+      >
+        <span>Directions</span>
+        <svg class="search__icon">
+          <use href="${_icons.default}#icon-arrow-right"></use>
+        </svg>
+      </a>
+    </div>
+  `;
   }
 
 }
 
-var _default = new BookmarksView();
+var _default = new bookmarksView();
 
 exports.default = _default;
-},{"./View.js":"61b7a1b097e16436be3d54c2f1828c73","url:../../img/icons.svg":"bf1dbfc46afe6a7efbd7538f9c58f602","./previewView.js":"e4d6583325a8b6c9380670c4f233bf07"}]},{},["14b509d535a3ae5ba08b8dbd94ef6651","be49f0749c1e5a0bae50f7861a2b2f4f","175e469a7ea7db1c8c0744d04372621f"], null)
+},{"./View.js":"61b7a1b097e16436be3d54c2f1828c73","url:../../img/icons.svg":"bf1dbfc46afe6a7efbd7538f9c58f602","fractional":"ddbc156a7c16e105c8df04e9fdec967d"}]},{},["14b509d535a3ae5ba08b8dbd94ef6651","be49f0749c1e5a0bae50f7861a2b2f4f","175e469a7ea7db1c8c0744d04372621f"], null)
 
 //# sourceMappingURL=controller.aea41a3e.js.map

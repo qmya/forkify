@@ -6870,8 +6870,6 @@ exports.default = void 0;
 
 var _View = _interopRequireDefault(require("./View.js"));
 
-var _previewView = _interopRequireDefault(require("./previewView.js"));
-
 var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -6894,59 +6892,12 @@ class ResultsView extends _View.default {
     console.log(this._data); //let loop through the this._data and return the elements value that we needed inside the HTML:
     //will return the string
 
-    return this._data.map(result => _previewView.default.render(result, false)).join('');
+    return this._data.map(result => previewView.render(result, false)).join('');
   }
 
 }
 
 var _default = new ResultsView();
-
-exports.default = _default;
-},{"./View.js":"61b7a1b097e16436be3d54c2f1828c73","url:../../img/icons.svg":"bf1dbfc46afe6a7efbd7538f9c58f602","./previewView.js":"e4d6583325a8b6c9380670c4f233bf07"}],"e4d6583325a8b6c9380670c4f233bf07":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _View = _interopRequireDefault(require("./View.js"));
-
-var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//parcel 2 if its an image you have to use url: with it
-class PreviewView extends _View.default {
-  constructor(...args) {
-    super(...args);
-
-    _defineProperty(this, "_parentElement", '');
-  }
-
-  _generateMarkup() {
-    const id = window.location.hash.slice(1);
-    return `
-        <li class="preview">
-            <a class="preview__link " ${this._data.id === id ? 'preview__link--active' : ''} href="#${this._data.id}">
-                <figure class="preview__fig">
-                    <img src="${this._data.image}" alt="${this._data.title}" />
-                </figure>
-                <div class="preview__data">
-                    <h4 class="preview__title">${this._data.title}</h4>
-                    <p class="preview__publisher">${this._data.publisher}</p>
-                    
-                </div>
-            </a>
-        </li>
-        `;
-  }
-
-}
-
-var _default = new PreviewView();
 
 exports.default = _default;
 },{"./View.js":"61b7a1b097e16436be3d54c2f1828c73","url:../../img/icons.svg":"bf1dbfc46afe6a7efbd7538f9c58f602"}],"d2063f3e7de2e4cdacfcb5eb6479db05":[function(require,module,exports) {
@@ -7082,6 +7033,53 @@ class BookmarksView extends _View.default {
 var _default = new BookmarksView();
 
 exports.default = _default;
-},{"./View.js":"61b7a1b097e16436be3d54c2f1828c73","url:../../img/icons.svg":"bf1dbfc46afe6a7efbd7538f9c58f602","./previewView.js":"e4d6583325a8b6c9380670c4f233bf07"}]},{},["14b509d535a3ae5ba08b8dbd94ef6651","be49f0749c1e5a0bae50f7861a2b2f4f","175e469a7ea7db1c8c0744d04372621f"], null)
+},{"./View.js":"61b7a1b097e16436be3d54c2f1828c73","url:../../img/icons.svg":"bf1dbfc46afe6a7efbd7538f9c58f602","./previewView.js":"e4d6583325a8b6c9380670c4f233bf07"}],"e4d6583325a8b6c9380670c4f233bf07":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _View = _interopRequireDefault(require("./View.js"));
+
+var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//parcel 2 if its an image you have to use url: with it
+class PreviewView extends _View.default {
+  constructor(...args) {
+    super(...args);
+
+    _defineProperty(this, "_parentElement", '');
+  }
+
+  _generateMarkup() {
+    const id = window.location.hash.slice(1);
+    return `
+        <li class="preview">
+            <a class="preview__link " ${this._data.id === id ? 'preview__link--active' : ''} href="#${this._data.id}">
+                <figure class="preview__fig">
+                    <img src="${this._data.image}" alt="${this._data.title}" />
+                </figure>
+                <div class="preview__data">
+                    <h4 class="preview__title">${this._data.title}</h4>
+                    <p class="preview__publisher">${this._data.publisher}</p>
+                    
+                </div>
+            </a>
+        </li>
+        `;
+  }
+
+}
+
+var _default = new PreviewView();
+
+exports.default = _default;
+},{"./View.js":"61b7a1b097e16436be3d54c2f1828c73","url:../../img/icons.svg":"bf1dbfc46afe6a7efbd7538f9c58f602"}]},{},["14b509d535a3ae5ba08b8dbd94ef6651","be49f0749c1e5a0bae50f7861a2b2f4f","175e469a7ea7db1c8c0744d04372621f"], null)
 
 //# sourceMappingURL=controller.aea41a3e.js.map
