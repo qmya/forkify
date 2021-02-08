@@ -5,6 +5,7 @@ import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
 import bookmarksView from './views/bookmarksView.js';
 import addRecipeView from './views/addRecipeView.js';
+import { MODAL_CLOSE_SEC } from './config.js';
 
 import 'core-js/stable'; //polyfilling everything else
 import 'regenerator-runtime/runtime'; //polyfilling async await
@@ -106,10 +107,34 @@ const controlBookmarks = function () {
 
 //////////////////////////////////////////////////////
 //Adding recipe to the Api
-const controlAddRecipe = function (newRecipe) {
-  console.log(newRecipe);
+const controlAddRecipe = async function (newRecipe) {
+  try {
+    //show loading spinner
+    addRecipeView.renderSpinner();
+    //upload the new recipe data
+    await model.uploadRecipe(newRecipe);
+    console.log(model.state.recipe);
 
-  //upload the new recipe data
+    //Render recipe
+    recipeView.render(model.state.recipe);
+
+    //Success message
+    addRecipeView.renderMessage();
+
+    //Render the bookmark view
+    bookmarksView.render(model.state.bookmarks);
+
+    //Change bookmark ID in the URL
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
+
+    //Close form window
+    setTimeout(function () {
+      addRecipeView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000);
+  } catch (error) {
+    console.log('💥', error);
+    addRecipeView.renderError(error.message);
+  }
 };
 //////////////////////////////////////////////////////
 //adding eventlistner for the search
