@@ -10,9 +10,9 @@ import 'regenerator-runtime/runtime'; //polyfilling async await
 import { async } from 'regenerator-runtime/runtime';
 
 //this is not javascript its comming from parcel
-if (module.hot) {
-  module.hot.accept();
-}
+// if (module.hot) {
+//   module.hot.accept();
+// }
 
 const controlRecipe = async function () {
   try {
@@ -24,17 +24,17 @@ const controlRecipe = async function () {
 
     // 0) Update results view to mark selected search result
     resultsView.update(model.getSearchResultsPage());
+
+    //1) Updating bookmarks view
     bookmarksView.update(model.state.bookmarks);
 
-    // 1) Loading the recipe :
+    // 2) Loading the recipe :
     await model.loadRecipe(id); //async function 👉🏽Here is the model.loadRecipe return anything
     //const recipe = model.state.recipe //We can write this like this too 👇🏽
     //const { recipe } = model.state;
 
-    // 2) Rendering recipe:
-    recipeView.render(model.state.recipe); // this render will accept this data (model.state.recipe) & will store it in the object(recipeView)
-    //Test
-    //controlServing();
+    // 3) Rendering recipe:
+    recipeView.render(model.state.recipe); // this render will accept this data (model.state.recipe) & will store it in
   } catch (error) {
     console.error(error);
     recipeView.renderError();
@@ -99,6 +99,10 @@ const controlAddBookmark = function () {
   bookmarksView.render(model.state.bookmarks);
 };
 
+const controlBookmarks = function () {
+  bookmarksView.render(model.state.bookmarks);
+};
+
 //////////////////////////////////////////////////////
 //adding eventlistner for the search
 // window.addEventListener('hashChange', showRecipe);
@@ -107,6 +111,7 @@ const controlAddBookmark = function () {
 //we can do the ☝🏽one through DRY method:
 // ['hashChange', 'load'].forEach(event => addEventListener(event, controlRecipe));
 const init = function () {
+  bookmarksView.addHandlerRender(controlBookmarks);
   //we will export the function from recipeView and add it here
   recipeView.addHandlerRender(controlRecipe);
   //serving button

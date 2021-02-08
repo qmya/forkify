@@ -7,8 +7,11 @@ class BookmarksView extends View {
   _errorMessage = 'No bookmark yet. Find a nice recipe and bookmark it';
   _message = '';
 
+  addHandlerRender(handler) {
+    window.addEventListener('load', handler);
+  }
+
   _generateMarkup() {
-    console.log(this._data);
     //let loop through the this._data and return the elements value that we needed inside the HTML:
     //will return the string
     return this._data
